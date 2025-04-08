@@ -1,7 +1,9 @@
 package org.example
 
 import org.example.app.Calculadora
+import org.example.model.Operadores
 import org.example.ui.Consola
+import org.example.utils.GestionFicheros
 
 /*
 fun main() {
@@ -26,8 +28,49 @@ fun main() {
 }
 */
 
-fun main() {
-    Calculadora(Consola()).iniciar()
+fun main(args: Array<String>) {
+
+    var rutaLogs = "./log"
+    val consola = Consola()
+    val fich = GestionFicheros(consola)
+
+    when(args.size){
+        0 -> {
+            if(!fich.existeDirectorio(rutaLogs)){
+                consola.mostrar("No existe el directorio $rutaLogs, creandolo...")
+                fich.crearDirectorio(rutaLogs)
+            }
+            fich.listarArchivos(rutaLogs)
+        }
+        1 -> {
+            rutaLogs = args[0]
+            if(!fich.existeDirectorio(rutaLogs)){
+                consola.mostrar("No existe el directorio $rutaLogs, creandolo...")
+                fich.crearDirectorio(rutaLogs)
+            }
+            fich.listarArchivos(rutaLogs)
+        }
+        4 -> {
+            val ruta = args[0]
+            val num1 = args[1].toDouble()
+            val operador = Operadores.getOperador(args[2].toCharArray()[0])
+            val num2 = args[3].toDouble()
+
+            if (operador == null){
+                consola.mostrarError("Operador introducido no valido.")
+            }else {
+                Calculadora(consola, fich).realizarCalculo(num1, operador, num2)
+            }
+        }
+        else -> {
+            consola.mostrarError("Error al introducir los argumentos iniciales.")
+            //Hacer que no inicie
+        }
+    }
+
+
+    consola.pausar("Pulse Enter para inicar la calculadora...")
+    Calculadora(consola,fich).iniciar()
 }
 
 

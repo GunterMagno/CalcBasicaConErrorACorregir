@@ -47,4 +47,9 @@ class Consola : IEntradaSalida {
             }
         }
     }
+
+    override fun pausar(msg: String) {
+        mostrar(msg)
+        scanner.nextLine()
+    }
 }

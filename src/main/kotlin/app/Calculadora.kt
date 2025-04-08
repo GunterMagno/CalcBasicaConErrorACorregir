@@ -2,20 +2,21 @@ package org.example.app
 
 import org.example.model.Operadores
 import org.example.ui.IEntradaSalida
+import org.example.utils.ControlFichero
 
-class Calculadora(private val ui: IEntradaSalida) {
+class Calculadora(private val consola: IEntradaSalida, private val fich: ControlFichero) {
 
     private fun pedirNumero(msj: String, msjError: String = "Número no válido!"): Double {
-        return ui.pedirDouble(msj) ?: throw InfoCalcException(msjError)
+        return consola.pedirDouble(msj) ?: throw InfoCalcException(msjError)
     }
 
     private fun pedirInfo() = Triple(
         pedirNumero("Introduce el primer número: ", "El primer número no es válido!"),
-        Operadores.getOperador(ui.pedirInfo("Introduce el operador (+, -, *, /): ").firstOrNull())
+        Operadores.getOperador(consola.pedirInfo("Introduce el operador (+, -, *, /): ").firstOrNull())
             ?: throw InfoCalcException("El operador no es válido!"),
         pedirNumero("Introduce el segundo número: ", "El segundo número no es válido!"))
 
-    private fun realizarCalculo(numero1: Double, operador: Operadores, numero2: Double) =
+    fun realizarCalculo(numero1: Double, operador: Operadores, numero2: Double) =
         when (operador) {
             Operadores.SUMA -> numero1 + numero2
             Operadores.RESTA -> numero1 - numero2
@@ -24,18 +25,22 @@ class Calculadora(private val ui: IEntradaSalida) {
         }
 
     fun iniciar() {
+
+        val input = consola.pedirInfo()
+
+
         do {
             try {
-                ui.limpiarPantalla()
+                consola.limpiarPantalla()
                 val (numero1, operador, numero2) = pedirInfo()
                 val resultado = realizarCalculo(numero1, operador, numero2)
-                ui.mostrar("Resultado: %.2f".format(resultado))
+                consola.mostrar("Resultado: %.2f".format(resultado))
             } catch (e: NumberFormatException) {
-                ui.mostrarError(e.message ?: "Se ha producido un error!")
+                consola.mostrarError(e.message ?: "Se ha producido un error!")
             } catch (e: InfoCalcException){
-                ui.mostrarError(e.message ?: "Se ha producido un error!")
+                consola.mostrarError(e.message ?: "Se ha producido un error!")
             }
-        } while (ui.preguntar())
-        ui.limpiarPantalla()
+        } while (consola.preguntar())
+        consola.limpiarPantalla()
     }
 }
