@@ -32,9 +32,10 @@ class Calculadora(private val ui: IEntradaSalida) {
                 ui.mostrar("Resultado: %.2f".format(resultado))
             } catch (e: NumberFormatException) {
                 ui.mostrarError(e.message ?: "Se ha producido un error!")
+            } catch (e: InfoCalcException){
+                ui.mostrarError(e.message ?: "Se ha producido un error!")
             }
         } while (ui.preguntar())
         ui.limpiarPantalla()
     }
-
 }
