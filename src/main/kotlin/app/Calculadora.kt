@@ -51,8 +51,6 @@ class Calculadora(private val consola: IEntradaSalida, private val fich: Control
 
     fun iniciar() {
 
-        val input = consola.pedirInfo()
-
         do {
             try {
                 consola.limpiarPantalla()
