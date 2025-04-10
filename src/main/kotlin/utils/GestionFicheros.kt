@@ -3,16 +3,25 @@ package org.example.utils
 import org.example.ui.IEntradaSalida
 import java.io.File
 import java.io.IOException
-import java.nio.file.Files
 
 class GestionFicheros(private val consola: IEntradaSalida): ControlFichero {
 
-    override fun listarArchivos(ruta: String) {
-        if (existeDirectorio(ruta)){
-            for (archivo in leerArchivo(ruta)){
-                consola.mostrar(archivo)
+    override fun listarArchivos(ruta: String): String {
+        if (existeDirectorio(ruta)) {
+            val archivos = File(ruta).listFiles()
+            if (archivos.isNullOrEmpty()) {
+                consola.mostrar("No existen ficheros de Log")
+            } else {
+                consola.mostrar("${archivos.size} Archivos encontrados en $ruta:\n")
+                var contador = 0
+                for (archivo in archivos){
+                    contador++
+                    consola.mostrar("$contador - ${archivo.name}")
+                }
+                return archivos.last().path
             }
         }
+        return ""
     }
 
     override fun leerArchivo(ruta: String): List<String> {
@@ -50,7 +59,16 @@ class GestionFicheros(private val consola: IEntradaSalida): ControlFichero {
     }
 
     override fun crearDirectorio(ruta: String) {
-        Files.createDirectory(ruta) // Como se creaba un directorio xdxxddxxddxxdxddxdx
+        val directorio = File(ruta)
+        if (!directorio.exists()) {
+            if (directorio.mkdirs()) {
+                consola.mostrar("Directorio $ruta creado correctamente")
+            } else {
+                consola.mostrarError("No se pudo crear el directorio $ruta")
+            }
+        } else {
+            consola.mostrar("El directorio $ruta ya existe")
+        }
     }
 
     override fun existeFichero(ruta: String): Boolean {

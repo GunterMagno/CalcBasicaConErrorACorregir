@@ -30,9 +30,10 @@ fun main() {
 
 fun main(args: Array<String>) {
 
-    var rutaLogs = "./log"
     val consola = Consola()
     val fich = GestionFicheros(consola)
+    var rutaLogs = "./log"
+    var continuar = true
 
     when(args.size){
         0 -> {
@@ -40,7 +41,12 @@ fun main(args: Array<String>) {
                 consola.mostrar("No existe el directorio $rutaLogs, creandolo...")
                 fich.crearDirectorio(rutaLogs)
             }
-            fich.listarArchivos(rutaLogs)
+
+            val rutaUltimo = fich.listarArchivos(rutaLogs)
+
+            for (linea in fich.leerArchivo(rutaUltimo)){
+                consola.mostrar(linea)
+            }
         }
         1 -> {
             rutaLogs = args[0]
@@ -51,26 +57,32 @@ fun main(args: Array<String>) {
             fich.listarArchivos(rutaLogs)
         }
         4 -> {
-            val ruta = args[0]
-            val num1 = args[1].toDouble()
-            val operador = Operadores.getOperador(args[2].toCharArray()[0])
-            val num2 = args[3].toDouble()
+            rutaLogs = args[0]
 
-            if (operador == null){
-                consola.mostrarError("Operador introducido no valido.")
-            }else {
-                Calculadora(consola, fich).realizarCalculo(num1, operador, num2)
+            try{
+                val num1 = args[1].toDouble()
+                val operador = Operadores.getOperador(args[2].toCharArray()[0])
+                val num2 = args[3].toDouble()
+
+                if (operador == null) {
+                    consola.mostrarError("Operador introducido no valido.")
+                } else {
+                    Calculadora(consola, fich,rutaLogs).realizarCalculo(num1, operador, num2)
+                }
+            }catch (e: NumberFormatException){
+                consola.mostrarError("Error en formato de números: ${e.message}")
             }
         }
         else -> {
             consola.mostrarError("Error al introducir los argumentos iniciales.")
-            //Hacer que no inicie
+            continuar = false
         }
     }
 
-
-    consola.pausar("Pulse Enter para inicar la calculadora...")
-    Calculadora(consola,fich).iniciar()
+    if(continuar){
+        consola.pausar("\nPulse Enter para inicar la calculadora...")
+        Calculadora(consola, fich,rutaLogs).iniciar()
+    }
 }
 
 
