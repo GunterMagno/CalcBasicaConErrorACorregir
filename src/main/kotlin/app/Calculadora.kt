@@ -38,7 +38,7 @@ class Calculadora(private val consola: IEntradaSalida, private val fich: Control
         val fechaHora = LocalDateTime.now().format(formatter)
 
         val entradaLog = "[$fechaHora] $mensaje"
-        val nombreArchivo = "log${LocalDateTime.now().format(DateTimeFormatter.BASIC_ISO_DATE)}.txt"
+        val nombreArchivo = "log${LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"))}.txt"
 
         val rutaCompleta = "$rutaLogs\\$nombreArchivo"
 
@@ -52,7 +52,6 @@ class Calculadora(private val consola: IEntradaSalida, private val fich: Control
     fun iniciar() {
 
         val input = consola.pedirInfo()
-
 
         do {
             try {
