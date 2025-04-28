@@ -53,7 +53,6 @@ class Calculadora(private val consola: IEntradaSalida, private val fich: Control
 
         val input = consola.pedirInfo()
 
-
         do {
             try {
                 consola.limpiarPantalla()
