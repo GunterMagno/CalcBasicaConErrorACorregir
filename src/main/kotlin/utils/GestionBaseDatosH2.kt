@@ -72,6 +72,7 @@ class GestionBaseDatosH2 : ControlBaseDatos {
 
             }
         }
+
         return historial
     }
 }
