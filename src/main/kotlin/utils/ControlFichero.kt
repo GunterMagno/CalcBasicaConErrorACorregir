@@ -1,6 +1,7 @@
 package org.example.utils
 
 interface ControlFichero {
+    fun registrarLog(mensaje: String,rutaLogs: String)
     fun listarArchivos(ruta: String): String
     fun leerArchivo(ruta: String): List<String>
     fun agregarLinea(ruta: String, linea: String): Boolean

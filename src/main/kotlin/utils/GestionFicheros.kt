@@ -3,8 +3,27 @@ package org.example.utils
 import org.example.ui.IEntradaSalida
 import java.io.File
 import java.io.IOException
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 class GestionFicheros(private val consola: IEntradaSalida): ControlFichero {
+
+    override fun registrarLog(mensaje: String,rutaLogs: String) {
+
+        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
+        val fechaHora = LocalDateTime.now().format(formatter)
+
+        val entradaLog = "[$fechaHora] $mensaje"
+        val nombreArchivo = "log${LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"))}.txt"
+
+        val rutaCompleta = "$rutaLogs\\$nombreArchivo"
+
+        if (!existeDirectorio(rutaLogs)) {
+            crearDirectorio(rutaLogs)
+        }
+
+        agregarLinea(rutaCompleta, entradaLog)
+    }
 
     override fun listarArchivos(ruta: String): String {
         if (existeDirectorio(ruta)) {
