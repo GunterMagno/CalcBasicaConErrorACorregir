@@ -5,7 +5,8 @@ import java.time.LocalDateTime
 
 interface ControlBaseDatos {
     fun inicializar()
-    fun obtenerConexion(): Connection
+    fun obtenerConexion(): Connection?
+    fun cerrarConexion(conexion: Connection)
     fun registrarOperacion(operacion: String, resultado: Double)
     fun obtenerHistorial(): List<String>
 }
