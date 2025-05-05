@@ -2,9 +2,10 @@ package org.example.app
 
 import org.example.model.Operadores
 import org.example.ui.IEntradaSalida
+import org.example.utils.ControlBaseDatos
 import org.example.utils.ControlFichero
 
-class Calculadora(private val consola: IEntradaSalida, private val fich: ControlFichero,private val rutaLogs: String) {
+class Calculadora(private val consola: IEntradaSalida, private val fich: ControlFichero,private val rutaLogs: String, private val baseDatos: ControlBaseDatos) {
 
     private fun pedirNumero(msj: String, msjError: String = "Número no válido!"): Double {
         return consola.pedirDouble(msj) ?: throw InfoCalcException(msjError)
@@ -42,12 +43,13 @@ class Calculadora(private val consola: IEntradaSalida, private val fich: Control
                 val resultado = realizarCalculo(numero1, operador, numero2)
 
                 consola.mostrar("Resultado: %.2f".format(resultado))
-                fich.registrarLog("$numero1 ${operador.simbolos[0]} $numero2 = $resultado",rutaLogs)
+                //fich.registrarLog("$numero1 ${operador.simbolos[0]} $numero2 = $resultado",rutaLogs)
+                baseDatos.registrarOperacion("$numero1 ${operador.simbolos[0]} $numero2",resultado)
 
             } catch (e: NumberFormatException) {
-                consola.mostrarError(e.message ?: "Se ha producido un error!")
+                consola.mostrarError("Se ha producido un error -> ${e.message}")
             } catch (e: InfoCalcException){
-                consola.mostrarError(e.message ?: "Se ha producido un error!")
+                consola.mostrarError("Se ha producido un error -> ${e.message}")
             }
         } while (consola.preguntar())
         consola.limpiarPantalla()
