@@ -3,6 +3,7 @@ package org.example
 import org.example.app.Calculadora
 import org.example.model.Operadores
 import org.example.ui.Consola
+import org.example.utils.GestionBaseDatosH2
 import org.example.utils.GestionFicheros
 
 /*
@@ -34,10 +35,12 @@ fun main(args: Array<String>) {
     val consola = Consola()
     val fich = GestionFicheros(consola)
     var rutaLogs = "./log"
+    val baseDatos = GestionBaseDatosH2()
     var continuar = true
 
     when(args.size){
         0 -> {
+            /*
             if(!fich.existeDirectorio(rutaLogs)){
                 consola.mostrar("No existe el directorio $rutaLogs, creandolo...")
                 fich.crearDirectorio(rutaLogs)
@@ -46,6 +49,12 @@ fun main(args: Array<String>) {
             val rutaUltimo = fich.listarArchivos(rutaLogs)
 
             for (linea in fich.leerArchivo(rutaUltimo)){
+                consola.mostrar(linea)
+            }
+            */
+
+            baseDatos.inicializar()
+            for (linea in baseDatos.obtenerHistorial()){
                 consola.mostrar(linea)
             }
         }
@@ -68,7 +77,7 @@ fun main(args: Array<String>) {
                 if (operador == null) {
                     consola.mostrarError("Operador introducido no valido.")
                 } else {
-                    Calculadora(consola, fich,rutaLogs).realizarCalculo(num1, operador, num2)
+                    Calculadora(consola, fich,rutaLogs,baseDatos).realizarCalculo(num1, operador, num2)
                 }
             }catch (e: NumberFormatException){
                 consola.mostrarError("Error en formato de números: ${e.message}")
@@ -82,7 +91,7 @@ fun main(args: Array<String>) {
 
     if(continuar){
         consola.pausar("\nPulse Enter para inicar la calculadora...")
-        Calculadora(consola, fich,rutaLogs).iniciar()
+        Calculadora(consola, fich,rutaLogs,baseDatos).iniciar()
     }
 }
 
