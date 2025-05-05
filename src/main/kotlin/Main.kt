@@ -28,6 +28,7 @@ fun main() {
 }
 */
 
+//ToDo probar con argumentos, en el archivo bat no me deja meterlos
 fun main(args: Array<String>) {
 
     val consola = Consola()

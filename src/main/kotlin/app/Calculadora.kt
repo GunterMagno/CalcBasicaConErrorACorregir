@@ -43,8 +43,10 @@ class Calculadora(private val consola: IEntradaSalida, private val fich: Control
 
             } catch (e: NumberFormatException) {
                 consola.mostrarError(e.message ?: "Se ha producido un error!")
+
             } catch (e: InfoCalcException){
                 consola.mostrarError(e.message ?: "Se ha producido un error!")
+
             }
         } while (consola.preguntar())
         consola.limpiarPantalla()
