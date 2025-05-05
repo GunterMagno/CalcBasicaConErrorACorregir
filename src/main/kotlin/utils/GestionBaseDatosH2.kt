@@ -12,7 +12,6 @@ class GestionBaseDatosH2 : ControlBaseDatos {
     override fun obtenerConexion(): Connection? {
         var conexion: Connection? = null
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver")
             conexion = DriverManager.getConnection(url, usuario, contrasenia)
             println("Conexión abierta")
         } catch (e: SQLException) {
