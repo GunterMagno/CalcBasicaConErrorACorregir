@@ -1,9 +1,10 @@
 package org.example
 
 import org.example.app.Calculadora
+import org.example.data.dao.OperacionesDAOH2
 import org.example.model.Operadores
+import org.example.service.OperService
 import org.example.ui.Consola
-import org.example.utils.GestionBaseDatosH2
 import org.example.utils.GestionFicheros
 
 /*
@@ -35,12 +36,13 @@ fun main(args: Array<String>) {
     val consola = Consola()
     val fich = GestionFicheros(consola)
     var rutaLogs = "./log"
-    val baseDatos = GestionBaseDatosH2()
+    val operDAOH2 = OperacionesDAOH2()
+    val operDbService = OperService(operDAOH2)
     var continuar = true
 
     when(args.size){
         0 -> {
-            /*
+            /* //ToDo Esto era para logs
             if(!fich.existeDirectorio(rutaLogs)){
                 consola.mostrar("No existe el directorio $rutaLogs, creandolo...")
                 fich.crearDirectorio(rutaLogs)
@@ -53,8 +55,8 @@ fun main(args: Array<String>) {
             }
             */
 
-            baseDatos.inicializar()
-            for (linea in baseDatos.obtenerHistorial()){
+            //operDbService.inicializar()
+            for (linea in operDbService.obtenerHistorial()){
                 consola.mostrar(linea)
             }
         }
@@ -77,7 +79,7 @@ fun main(args: Array<String>) {
                 if (operador == null) {
                     consola.mostrarError("Operador introducido no valido.")
                 } else {
-                    Calculadora(consola, fich,rutaLogs,baseDatos).realizarCalculo(num1, operador, num2)
+                    Calculadora(consola, fich,rutaLogs,operDbService).realizarCalculo(num1, operador, num2)
                 }
             }catch (e: NumberFormatException){
                 consola.mostrarError("Error en formato de números: ${e.message}")
@@ -91,31 +93,6 @@ fun main(args: Array<String>) {
 
     if(continuar){
         consola.pausar("\nPulse Enter para inicar la calculadora...")
-        Calculadora(consola, fich,rutaLogs,baseDatos).iniciar()
+        Calculadora(consola, fich,rutaLogs,operDbService).iniciar()
     }
 }
-
-
-/*
-import java.util.*
-
-fun main() {
-    val scanner = Scanner(System.`in`)
-
-    val numLineas = scanner.nextInt()
-    scanner.nextLine() // Limpia el salto de línea pendiente
-
-    var resultado = 1
-
-    for (i in 1..numLineas) {
-        var suma = 0
-        while (scanner.hasNextInt()) {
-            suma += scanner.nextInt()
-        }
-        resultado *= suma
-        if (scanner.hasNextLine()) scanner.nextLine() // pasar a la siguiente línea
-    }
-
-    println(resultado)
-}
-*/
