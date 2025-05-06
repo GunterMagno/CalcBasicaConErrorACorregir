@@ -56,9 +56,12 @@ fun main(args: Array<String>) {
             */
 
             //operDbService.inicializar()
+            consola.mostrar("\nHistorial de Operaciones Realizadas")
+            consola.mostrar("-------------------------------------")
             for (linea in operDbService.obtenerHistorial()){
                 consola.mostrar(linea)
             }
+            consola.mostrar("-------------------------------------")
         }
         1 -> {
             rutaLogs = args[0]

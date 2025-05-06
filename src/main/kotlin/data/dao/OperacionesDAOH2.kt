@@ -55,7 +55,12 @@ class OperacionesDAOH2: IOperaciones {
             """.trimIndent()
             )
 
-            historial.add(query.toString()) //ToDo mirar si esto funciona bien (no lo creo)
+            while (query?.next() == true){
+                var cadena = ""
+
+                cadena = "${query.getString("operacion")} ${query.getString("resultado")} ${query.getString("fecha_hora")}"
+                historial.add(cadena)
+            }
 
         } catch (e: SQLException){
             println("Error en la conexión: ${e.message}")

@@ -13,7 +13,7 @@ object Database {
         var conexion: Connection?
         try {
             conexion = DriverManager.getConnection(URL, USUARIO, CONTRASENIA)
-            println("Conexión abierta")
+            //println("Conexión abierta")
         } catch (e: SQLException) {
             println("Error en la conexión: ${e.message}")
             conexion = null
@@ -27,7 +27,7 @@ object Database {
     fun cerrarConexion(conexion: Connection) {
         try {
             conexion.close()
-            println("Conexión cerrada")
+            //println("Conexión cerrada")
         } catch (e: SQLException) {
             println("Error al cerrar la conexión: ${e.message}")
         }
