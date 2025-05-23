@@ -7,6 +7,15 @@ import org.example.service.OperService
 import org.example.ui.Consola
 import org.example.utils.GestionFicheros
 
+/**
+ * Función principal que gestiona la ejecución de la aplicación.
+ * Dependiendo de los parámetros de entrada, realiza diferentes operaciones, como mostrar el historial
+ * de operaciones, crear directorios de logs, o realizar un cálculo utilizando una calculadora.
+ *
+ * @param args Parámetros de entrada proporcionados por la línea de comandos.
+ * @throws NumberFormatException Si los parámetros numéricos no son válidos o tienen un formato incorrecto.
+ */
+
 fun main(args: Array<String>) {
 
     val consola = Consola()

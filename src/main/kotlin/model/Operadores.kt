@@ -1,5 +1,9 @@
 package org.example.model
 
+/**
+ * Enum que representa los operadores matemáticos disponibles en la aplicación.
+ * Cada operador tiene una lista de símbolos que lo representan.
+ */
 enum class Operadores(val simbolos: List<Char>) {
     SUMA(listOf('+')),
     RESTA(listOf('-')),
@@ -7,28 +11,12 @@ enum class Operadores(val simbolos: List<Char>) {
     DIVISION(listOf(':', '/'));
 
     companion object {
+        /**
+         * Obtiene el operador correspondiente a un símbolo.
+         *
+         * @param operador El símbolo del operador.
+         * @return El operador correspondiente, o `null` si no se encuentra un operador con ese símbolo.
+         */
         fun getOperador(operador: Char?) = operador?.let { op -> entries.find { op in it.simbolos } }
-
-        /*
-        private fun buscarOperador(operador: Char, simbolos: List<Char>): Boolean {
-            for (simbolo in simbolos) {
-                if (simbolo == operador) {
-                    return true
-                }
-            }
-            return false
-        }
-
-        fun getOperador2(operador: Char?): Operadores? {
-            if (operador != null) {
-                for (valor in entries) {
-                    if (buscarOperador(operador, valor.simbolos)) {
-                        return valor
-                    }
-                }
-            }
-            return null
-        }
-        */
     }
 }
