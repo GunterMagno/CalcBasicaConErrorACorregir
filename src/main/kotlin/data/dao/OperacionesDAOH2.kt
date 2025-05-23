@@ -37,12 +37,15 @@ class OperacionesDAOH2: IOperaciones {
 
         } catch (e: SQLException) {
             println("Error en la conexión: ${e.message}")
+        } catch (e: Exception) {
+            println("Error inesperado: ${e.message}")
         } finally {
-            if (conexion != null) {
-                Database.cerrarConexion(conexion)
-            }
+                if (conexion != null) {
+                    Database.cerrarConexion(conexion)
+                }
         }
     }
+
 
     /**
      * Obtiene el historial de operaciones registradas en la base de datos.
@@ -71,6 +74,8 @@ class OperacionesDAOH2: IOperaciones {
 
         } catch (e: SQLException) {
             println("Error en la conexión: ${e.message}")
+        }catch (e: Exception) {
+            println("Error inesperado: ${e.message}")
         } finally {
             if (conexion != null) {
                 Database.cerrarConexion(conexion)
