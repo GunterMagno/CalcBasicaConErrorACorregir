@@ -7,30 +7,6 @@ import org.example.service.OperService
 import org.example.ui.Consola
 import org.example.utils.GestionFicheros
 
-/*
-fun main() {
-    val scanner = Scanner(System.`in`)
-
-    println("Introduce el primer número:")
-    val numero1 = scanner.nextDouble()
-    println("Introduce el operador (+, -, *, /):")
-    val operador = scanner.next()[0]
-    println("Introduce el segundo número:")
-    val numero2 = scanner.nextDouble()
-
-    val resultado = when (operador) {
-        '+' -> numero1 + numero2
-        '-' -> numero1 - numero2
-        '*' -> numero1 * numero2
-        '/' -> numero1 / numero2
-        else -> "Operador no válido"
-    }
-
-    println("Resultado: $resultado")
-}
-*/
-
-//ToDo probar con argumentos, en el archivo bat no me deja meterlos
 fun main(args: Array<String>) {
 
     val consola = Consola()
@@ -56,10 +32,12 @@ fun main(args: Array<String>) {
             */
 
             //operDbService.inicializar()
+
+
             consola.mostrar("\nHistorial de Operaciones Realizadas")
             consola.mostrar("-------------------------------------")
-            for (linea in operDbService.obtenerHistorial()){
-                consola.mostrar(linea)
+            for (operacion in operDbService.obtenerHistorial()){
+                consola.mostrar("$operacion\n")
             }
             consola.mostrar("-------------------------------------")
         }

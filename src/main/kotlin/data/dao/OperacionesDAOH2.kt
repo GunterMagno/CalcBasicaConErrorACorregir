@@ -1,16 +1,12 @@
 package org.example.data.dao
 
 import org.example.data.db.Database
+import org.example.model.Operacion
 import java.sql.SQLException
 import java.sql.Timestamp
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 
 class OperacionesDAOH2: IOperaciones {
-    override fun registrarOperacion(operacion: String, resultado: Double) {
-        val fechaHora = LocalDateTime.now()
-        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
-        val fechaFormateada = fechaHora.format(formatter)
+    override fun registrarOperacion(operacion: Operacion) {
 
         val conexion = Database.obtenerConexion()
 
@@ -22,9 +18,9 @@ class OperacionesDAOH2: IOperaciones {
                 """.trimIndent()
             )
 
-            stmt?.setString(1, operacion)
-            stmt?.setDouble(2, resultado)
-            stmt?.setTimestamp(3, Timestamp.valueOf(fechaFormateada))
+            stmt?.setString(1, operacion.operacion)
+            stmt?.setDouble(2, operacion.resultado)
+            stmt?.setTimestamp(3, operacion.fecha)
             stmt?.executeUpdate()
 
             stmt?.close()
@@ -38,8 +34,8 @@ class OperacionesDAOH2: IOperaciones {
         }
     }
 
-    override fun obtenerHistorial(): List<String> {
-        val historial = mutableListOf<String>()
+    override fun obtenerHistorial(): List<Operacion> {
+        val historial = mutableListOf<Operacion>()
 
         val conexion = Database.obtenerConexion()
 
@@ -56,10 +52,7 @@ class OperacionesDAOH2: IOperaciones {
             )
 
             while (query?.next() == true){
-                var cadena = ""
-
-                cadena = "${query.getString("operacion")} ${query.getString("resultado")} ${query.getString("fecha_hora")}"
-                historial.add(cadena)
+                historial.add(Operacion(query.getString("operacion"),query.getDouble("resultado"),query.getTimestamp("fecha_hora")))
             }
 
         } catch (e: SQLException){
@@ -73,7 +66,7 @@ class OperacionesDAOH2: IOperaciones {
         return historial
     }
 
-//    fun inicializar() { //ToDo Arreglar esto ponerle un try catch ocn finally EL .USE ABRE Y CIERRA SOLO LOS STATMENT Y LAS CONEXIONES y utilizar la funcion cerrar conexion
+//    fun inicializar() {
 //        val conexion = obtenerConexion()
 //        try {
 //            val smtm = conexion?.createStatement()

@@ -1,6 +1,8 @@
 package org.example.service
 
+import org.example.model.Operacion
+
 interface IOperService {
-    fun registrarOperacion(operacion: String, resultado: Double)
-    fun obtenerHistorial(): List<String>
+    fun registrarOperacion(operacion: Operacion)
+    fun obtenerHistorial(): List<Operacion>
 }

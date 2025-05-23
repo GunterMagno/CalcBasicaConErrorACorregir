@@ -1,9 +1,13 @@
 package org.example.app
 
+import org.example.model.Operacion
 import org.example.model.Operadores
 import org.example.service.IOperService
 import org.example.ui.IEntradaSalida
 import org.example.utils.ControlFichero
+import java.sql.Timestamp
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 class Calculadora(
     private val consola: IEntradaSalida,
@@ -49,7 +53,14 @@ class Calculadora(
 
                 consola.mostrar("Resultado: %.2f".format(resultado))
                 //fich.registrarLog("$numero1 ${operador.simbolos[0]} $numero2 = $resultado",rutaLogs) //ToDo Esto era para los logs
-                dbService.registrarOperacion("$numero1 ${operador.simbolos[0]} $numero2",resultado)
+
+                val operacion = "$numero1 ${operador.simbolos[0]} $numero2"
+
+                val fechaHora = LocalDateTime.now()
+                val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
+                val fechaFormateada = Timestamp.valueOf(fechaHora.format(formatter))
+
+                dbService.registrarOperacion(Operacion(operacion, resultado, fechaFormateada))
 
             } catch (e: NumberFormatException) {
                 consola.mostrarError("Se ha producido un error -> ${e.message}")
